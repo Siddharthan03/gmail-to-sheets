@@ -1,15 +1,25 @@
 📧 Gmail to Google Sheets Automation
+👤 Author
 
-Author: Siddharthan
+Name: Siddharthan
+
 Language: Python 3
+
 APIs Used: Gmail API, Google Sheets API
+
 Authentication: OAuth 2.0 (Installed App Flow)
 
 📖 Project Overview
 
-This project is a Python automation system that reads real unread emails from a Gmail inbox and logs them into a Google Sheet in a structured format.
+Python automation to read real unread Gmail emails
 
-Each qualifying email is added as a new row containing:
+Logs email data into Google Sheets
+
+Each email is stored as a new row
+
+System is idempotent (no duplicate rows on re-run)
+
+Data logged per email:
 
 Sender email address
 
@@ -19,47 +29,40 @@ Date & time received
 
 Email body (plain text)
 
-The system is designed to be idempotent, meaning re-running the script does not duplicate data.
+🎯 Project Objectives
 
-🎯 Objective
+Authenticate Gmail using OAuth 2.0
 
-Connect to Gmail using OAuth 2.0
-
-Fetch unread emails from the Inbox
+Fetch unread emails from Inbox
 
 Parse email metadata and content
 
-Append data into Google Sheets
+Append email data to Google Sheets
 
 Mark processed emails as read
 
-Prevent duplicate processing on re-runs
+Prevent duplicate processing on subsequent runs
 
 🏗️ High-Level Architecture
 
-┌──────────┐
-│  Gmail   │
-│  Inbox   │
-└────┬─────┘
-     │  Gmail API (OAuth)
-     ▼
-┌───────────────┐
-│ Python Script │
-│ (Parsing +    │
-│ State Logic)  │
-└────┬──────────┘
-     │  Google Sheets API
-     ▼
-┌────────────────────┐
-│ Google Sheets      │
-│ Gmail Inbox Logs   │
-└────────────────────┘
+Gmail Inbox → Gmail API (OAuth)
 
+Python automation script
+
+Google Sheets API → Google Sheet storage
+
+Gmail Inbox
+   ↓
+Gmail API (OAuth)
+   ↓
+Python Script (Parsing + State Management)
+   ↓
+Google Sheets API
+   ↓
+Google Sheet (Gmail Inbox Logs)
 
 📂 Project Structure
-
 gmail-to-sheets/
-│
 ├── src/
 │   ├── __init__.py
 │   ├── gmail_service.py
@@ -81,9 +84,8 @@ gmail-to-sheets/
 ├── .gitignore
 └── README.md
 
-
 ⚙️ Setup Instructions
-1️⃣ Clone the Repository
+1️⃣ Clone Repository
 git clone <your-repo-url>
 cd gmail-to-sheets
 
@@ -94,7 +96,7 @@ source venv/bin/activate
 3️⃣ Install Dependencies
 pip install -r requirements.txt
 
-4️⃣ Google Cloud Setup
+4️⃣ Google Cloud Configuration
 
 Create a Google Cloud project
 
@@ -104,13 +106,13 @@ Gmail API
 
 Google Sheets API
 
-Configure OAuth Consent Screen
+Configure OAuth Consent Screen:
 
-Type: External
+User type: External
 
 Add your Gmail ID as a Test User
 
-Create OAuth Client ID
+Create OAuth Client ID:
 
 Application type: Desktop
 
@@ -127,55 +129,55 @@ credentials/credentials.json
 python3 -m src.main
 
 
-On first run:
+First run behavior:
 
 Browser opens for OAuth consent
 
-Access token is generated
+User grants permissions
 
-Emails are processed
+Access token generated
+
+Emails processed and logged
 
 🔐 OAuth Flow Explanation
 
 Uses OAuth 2.0 Installed App flow
 
-User explicitly grants Gmail & Sheets access
+User explicitly authorizes Gmail and Sheets access
 
-Access token is stored locally in token.json
+Token stored locally as token.json
 
-No API keys or service accounts are used
+No API keys or service accounts used
 
-This is required because Gmail data is sensitive and cannot be accessed via service accounts.
+Required due to Gmail’s sensitive data access rules
 
 🔁 Duplicate Prevention Logic
 
-Every processed email has a unique Gmail message ID
+Each Gmail email has a unique message ID
 
-Processed IDs are stored in state.json
+Processed message IDs stored in state.json
 
 On each run:
 
-Script checks if an email ID already exists
+Script checks if message ID already exists
 
-If yes → it is skipped
+If yes → email is skipped
 
-This ensures:
+Result:
 
 No duplicate rows
 
-Safe re-execution of the script
+Safe re-execution of script
 
 🗂️ State Persistence Method
 
-State is stored in a local file: state.json
+State stored in state.json
 
-Contains a list of processed Gmail message IDs
+Contains list of processed Gmail message IDs
 
 Chosen because:
 
-Simple
-
-Lightweight
+Simple and lightweight
 
 No database required
 
@@ -185,46 +187,46 @@ Gmail message IDs are immutable
 
 The /proof folder contains:
 
-Gmail Inbox Screenshot
+Gmail Inbox screenshot (unread emails)
 
-Showing unread emails
+Google Sheet screenshot (minimum 5 rows)
 
-Google Sheet Screenshot
+OAuth consent screen screenshot
 
-At least 5 rows populated by the script
+2–3 minute demo video explaining:
 
-OAuth Consent Screen Screenshot
+Project flow
 
-2–3 Minute Demo Video
+Gmail → Sheets integration
 
-Explains project flow
+Duplicate prevention
 
-Shows duplicate prevention
-
-Explains re-run behavior
+Script re-run behavior
 
 ⚠️ Challenges Faced & Solutions
-Challenge:
+Challenge
 
-Google OAuth initially blocked access due to testing mode and disabled APIs.
+OAuth access blocked due to testing mode
 
-Solution:
+Gmail and Sheets APIs initially disabled
 
-Added Gmail account as a Test User
+Solution
 
-Enabled Gmail API and Google Sheets API explicitly
+Added Gmail account as Test User
+
+Enabled required APIs explicitly
 
 Allowed propagation time for API activation
 
 📉 Limitations
 
-Google Sheets has a 50,000 character limit per cell
+Google Sheets has a 50,000 character cell limit
 
-Long email bodies are truncated safely with a [TRUNCATED] marker
+Long email bodies are truncated with [TRUNCATED]
 
-Email formatting is plain text
+Email content stored as plain text
 
-HTML emails are converted to text and lightly cleaned
+HTML emails cleaned but not visually formatted
 
 Attachments are not processed
 
@@ -238,11 +240,11 @@ Safe truncation for large emails
 
 Robust error handling
 
-Clean project structure
+Clean, modular project structure
 
 🔄 Post-Submission Modification Readiness
 
-The project is structured to easily support changes such as:
+Project structure supports easy changes such as:
 
 Filtering emails from last 24 hours
 
@@ -256,7 +258,7 @@ This project demonstrates:
 
 Real-world API integration
 
-Secure OAuth handling
+Secure OAuth 2.0 handling
 
 Idempotent automation design
 
