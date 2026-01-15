@@ -243,7 +243,11 @@ Safe re-execution of script
 ✅ Conclusion
 
 This project demonstrates:
+
       . Real-world API integration
+      
       . Secure OAuth 2.0 handling
+      
       . Idempotent automation design
+      
       . Clean and maintainable Python code
