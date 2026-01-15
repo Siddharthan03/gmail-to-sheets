@@ -11,55 +11,55 @@ Authentication: OAuth 2.0 (Installed App Flow)
 
 📖 Project Overview
 
-Python automation to read real unread Gmail emails
+1. Python automation to read real unread Gmail emails
 
-Logs email data into Google Sheets
+2. Logs email data into Google Sheets
 
-Each email is stored as a new row
+3. Each email is stored as a new row
 
-System is idempotent (no duplicate rows on re-run)
+4. System is idempotent (no duplicate rows on re-run)
 
-Data logged per email:
+      Data logged per email:
 
-Sender email address
+5. Sender email address
 
-Subject
+6. Subject
 
-Date & time received
+7. Date & time received
 
-Email body (plain text)
+8. Email body (plain text)
 
 🎯 Project Objectives
 
-Authenticate Gmail using OAuth 2.0
+1. Authenticate Gmail using OAuth 2.0
 
-Fetch unread emails from Inbox
+2. Fetch unread emails from Inbox
 
-Parse email metadata and content
+3. Parse email metadata and content
 
-Append email data to Google Sheets
+4. Append email data to Google Sheets
 
-Mark processed emails as read
+5. Mark processed emails as read
 
-Prevent duplicate processing on subsequent runs
+6. Prevent duplicate processing on subsequent runs
 
 🏗️ High-Level Architecture
 
-Gmail Inbox → Gmail API (OAuth)
+1. Gmail Inbox → Gmail API (OAuth)
 
-Python automation script
+2. Python automation script
 
-Google Sheets API → Google Sheet storage
+3. Google Sheets API → Google Sheet storage
 
-Gmail Inbox
-   ↓
-Gmail API (OAuth)
-   ↓
-Python Script (Parsing + State Management)
-   ↓
-Google Sheets API
-   ↓
-Google Sheet (Gmail Inbox Logs)
+   Gmail Inbox
+      ↓
+   Gmail API (OAuth)
+      ↓
+   Python Script (Parsing + State Management)
+      ↓
+   Google Sheets API
+      ↓
+   Google Sheet (Gmail Inbox Logs)
 
 📂 Project Structure
 gmail-to-sheets/
@@ -98,168 +98,152 @@ pip install -r requirements.txt
 
 4️⃣ Google Cloud Configuration
 
-Create a Google Cloud project
+1. Create a Google Cloud project
 
-Enable:
+2. Enable:
 
-Gmail API
+      . Gmail API
 
-Google Sheets API
+      . Google Sheets API
 
-Configure OAuth Consent Screen:
+3. Configure OAuth Consent Screen:
 
-User type: External
+4. User type: External
 
-Add your Gmail ID as a Test User
+5. Add your Gmail ID as a Test User
 
-Create OAuth Client ID:
+6. Create OAuth Client ID:
 
-Application type: Desktop
+7. Application type: Desktop
 
-Download credentials.json
+8. Download credentials.json
 
-Place it in:
-
-credentials/credentials.json
-
-
+9. Place it in:
+    
+      credentials/credentials.json
 ⚠️ This file is intentionally excluded from GitHub.
 
-5️⃣ Run the Script
-python3 -m src.main
+5️⃣ Run the Script:
+
+      python3 -m src.main
 
 
 First run behavior:
 
-Browser opens for OAuth consent
+1. Browser opens for OAuth consent
 
-User grants permissions
+2. User grants permissions
 
-Access token generated
+3. Access token generated
 
-Emails processed and logged
+4. Emails processed and logged
 
 🔐 OAuth Flow Explanation
 
-Uses OAuth 2.0 Installed App flow
+1. Uses OAuth 2.0 Installed App flow
 
-User explicitly authorizes Gmail and Sheets access
+2. User explicitly authorizes Gmail and Sheets access
 
-Token stored locally as token.json
+3. Token stored locally as token.json
 
-No API keys or service accounts used
+4. No API keys or service accounts used
 
-Required due to Gmail’s sensitive data access rules
+5. Required due to Gmail’s sensitive data access rules
 
 🔁 Duplicate Prevention Logic
 
-Each Gmail email has a unique message ID
+1. Each Gmail email has a unique message ID
 
-Processed message IDs stored in state.json
+2. Processed message IDs stored in state.json
 
-On each run:
+3. On each run:
 
-Script checks if message ID already exists
+      . Script checks if message ID already exists
 
-If yes → email is skipped
+      . If yes → email is skipped
 
-Result:
+4. Result:
 
-No duplicate rows
+   No duplicate rows
 
 Safe re-execution of script
 
 🗂️ State Persistence Method
 
-State stored in state.json
+1. State stored in state.json
 
-Contains list of processed Gmail message IDs
+2. Contains list of processed Gmail message IDs
 
-Chosen because:
+3. Chosen because:
 
-Simple and lightweight
+      . Simple and lightweight
 
-No database required
+      . No database required
 
-Gmail message IDs are immutable
+      . Gmail message IDs are immutable
 
 📸 Proof of Execution
 
-The /proof folder contains:
+1. The /proof folder contains:
 
-Gmail Inbox screenshot (unread emails)
+      . Gmail Inbox screenshot (unread emails)
 
-Google Sheet screenshot (minimum 5 rows)
+      . Google Sheet screenshot (minimum 5 rows)
 
-OAuth consent screen screenshot
+      . OAuth consent screen screenshot
 
-2–3 minute demo video explaining:
+2. 2–3 minute demo video explaining:
 
-Project flow
+      . Project flow
 
-Gmail → Sheets integration
+      . Gmail → Sheets integration
 
-Duplicate prevention
+      . Duplicate prevention
 
-Script re-run behavior
+      . Script re-run behavior
 
 ⚠️ Challenges Faced & Solutions
-Challenge
+1. Challenge
 
-OAuth access blocked due to testing mode
+      . OAuth access blocked due to testing mode
 
-Gmail and Sheets APIs initially disabled
+      . Gmail and Sheets APIs initially disabled
 
-Solution
+2. Solution
 
-Added Gmail account as Test User
+      . Added Gmail account as Test User
 
-Enabled required APIs explicitly
+      . Enabled required APIs explicitly
 
-Allowed propagation time for API activation
+      . Allowed propagation time for API activation
 
-📉 Limitations
+3. 📉 Limitations
 
-Google Sheets has a 50,000 character cell limit
+      . Google Sheets has a 50,000 character cell limit
 
-Long email bodies are truncated with [TRUNCATED]
+      . Long email bodies are truncated with [TRUNCATED]
 
-Email content stored as plain text
+      . Email content stored as plain text
 
-HTML emails cleaned but not visually formatted
+      . HTML emails cleaned but not visually formatted
 
-Attachments are not processed
+      . Attachments are not processed
 
-⭐ Bonus Enhancements Implemented
-
-HTML → plain text conversion
-
-Email body cleaning
-
-Safe truncation for large emails
-
-Robust error handling
-
-Clean, modular project structure
 
 🔄 Post-Submission Modification Readiness
 
-Project structure supports easy changes such as:
+1. Project structure supports easy changes such as:
 
-Filtering emails from last 24 hours
+2. Filtering emails from last 24 hours
 
-Adding new columns (labels, thread ID)
+3. Adding new columns (labels, thread ID)
 
-Excluding automated emails (no-reply)
+4. Excluding automated emails (no-reply)
 
 ✅ Conclusion
 
 This project demonstrates:
-
-Real-world API integration
-
-Secure OAuth 2.0 handling
-
-Idempotent automation design
-
-Clean and maintainable Python code
+      . Real-world API integration
+      . Secure OAuth 2.0 handling
+      . Idempotent automation design
+      . Clean and maintainable Python code
